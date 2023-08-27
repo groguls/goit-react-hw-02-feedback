@@ -1,4 +1,3 @@
-import { v4 as uuidv4 } from 'uuid';
 import { Button, ButtonWrap } from './FeedbackOptions.styled';
 
 export const FeedbackOptions = ({ options, onLeaveFeedback }) => {
@@ -7,7 +6,7 @@ export const FeedbackOptions = ({ options, onLeaveFeedback }) => {
       {options.map(option => (
         <Button
           color={option}
-          key={uuidv4()}
+          key={option}
           type="button"
           onClick={() => onLeaveFeedback(option)}
         >
