@@ -13,24 +13,20 @@ export class App extends Component {
   };
 
   onLeaveFeedback = label => {
-    this.setState({ [label]: this.state[label] + 1 });
+    this.setState(pState => ({ [label]: pState[label] + 1 }));
   };
 
-  countTotalFeedback = (good, neutral, bad) => {
-    return good + neutral + bad;
+  countTotalFeedback = () => {
+    return Object.values(this.state).reduce((acc, value) => acc + value, 0);
   };
 
-  countPositiveFeedbackPercentage = (good, total) => {
-    return Math.round((good / total) * 100);
+  countPositiveFeedbackPercentage = () => {
+    return Math.round((this.state.good / this.countTotalFeedback()) * 100);
   };
 
   render() {
     const { good, neutral, bad } = this.state;
-    const total = this.countTotalFeedback(good, neutral, bad);
-    const positivePercentage = this.countPositiveFeedbackPercentage(
-      good,
-      total
-    );
+    const total = this.countTotalFeedback();
     return (
       <PageWrapper>
         <GlobalStyle />
@@ -42,15 +38,15 @@ export class App extends Component {
         </Section>
         <Section title={'Statistics'}>
           {total <= 0 ? (
-            <Notification message="There is no feedback"></Notification>
+            <Notification message="There is no feedback" />
           ) : (
             <Statistics
               good={good}
               neutral={neutral}
               bad={bad}
               total={total}
-              positivePercentage={positivePercentage}
-            ></Statistics>
+              positivePercentage={this.countPositiveFeedbackPercentage()}
+            />
           )}
         </Section>
       </PageWrapper>
